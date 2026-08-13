@@ -29,16 +29,12 @@ async def health():
 
 @app.get("/companies")
 async def list_companies():
-    companies = get_companies()
-    return {"companies": companies}
+    return {"companies": get_companies()}
 
 @app.get("/companies/{company_id}/reviews")
 async def list_reviews(company_id: int):
-    reviews = get_reviews_by_company(company_id)
-    return {"reviews": reviews}
+    return {"reviews": get_reviews_by_company(company_id)}
 
 @app.get("/companies/{company_id}/insights")
 async def list_insights(company_id: int):
-    insights = get_insights_by_company(company_id)
-    return {"insights": insights}
-
+    return {"insights": get_insights_by_company(company_id)}
