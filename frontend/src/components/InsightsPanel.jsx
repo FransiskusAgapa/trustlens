@@ -25,7 +25,7 @@ function Insights({ companyId, companyName }) {
 
     return (
         <div>
-            <h2 className="section-title">Insights for {companyName}</h2>
+            <h2 className="section-title">{companyName} has ({insights.length}) Insights</h2>
             {insights.map((insight, index) => (
                 <div key={index}>
                     <div key={index} className="review-item">

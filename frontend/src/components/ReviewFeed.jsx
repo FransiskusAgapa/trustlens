@@ -27,7 +27,7 @@ function Reviews ({ companyId, companyName }) {
 
     return (
         <div>
-            <h2 className="section-title">({reviews.length}) Reviews for {companyName}</h2>
+            <h2 className="section-title">{companyName} has ({reviews.length}) Reviews</h2>
             {reviews.map((review, index) => (
                 <div key={index} className="review-item">
                     <div className="rating">
