@@ -11,7 +11,7 @@ function Compare({ companyAId, companyAName }) {
     const [insightB, setInsightB] = useState([])
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/companies`)
+        axios.get(`https://trustlens-api-bywi.onrender.com/companies`)
         .then((response) => {
             setCompanies(response.data.companies)
         })
@@ -23,7 +23,7 @@ function Compare({ companyAId, companyAName }) {
 
     useEffect(() => {
         if (companyAId) {
-            axios.get(`http://127.0.0.1:8000/companies/${companyAId}/insights`)
+            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyAId}/insights`)
             .then((response) => {
                 setInsightA(response.data.insights)
             })
