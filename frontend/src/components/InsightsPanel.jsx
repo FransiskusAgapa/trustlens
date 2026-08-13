@@ -7,7 +7,7 @@ function Insights({ companyId, companyName }) {
 
     useEffect(() => {
         if (companyId) {
-            axios.get(`http://127.0.0.1:8000/companies/${companyId}/insights`)
+            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyId}/insights`)
             .then((response) => {
                 setInsights(response.data.insights);
                 setLoading(false);

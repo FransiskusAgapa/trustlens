@@ -6,7 +6,7 @@ function Companies({ onCompanySelect }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/companies')
+        axios.get('https://trustlens-api-bywi.onrender.com/companies')
             .then((response) => {
                 setCompanies(response.data.companies);
                 setLoading(false);

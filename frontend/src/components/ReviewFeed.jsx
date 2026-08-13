@@ -9,7 +9,7 @@ function Reviews ({ companyId, companyName }) {
 
     useEffect(() => {
         if (companyId) {
-            axios.get(`http://127.0.0.1:8000/companies/${companyId}/reviews`)
+            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyId}/reviews`)
             .then((response) => {
                 setReviews(response.data.reviews);
                 setLoading(false);

@@ -32,7 +32,7 @@ function Compare({ companyAId, companyAName }) {
             });
         }
         if (selectedCompanyBId) {
-            axios.get(`http://127.0.0.1:8000/companies/${selectedCompanyBId}/insights`)
+            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${selectedCompanyBId}/insights`)
             .then((response) => {
                 setInsightB(response.data.insights)
             })
@@ -41,7 +41,6 @@ function Compare({ companyAId, companyAName }) {
             });
         }
     }, [companyAId, selectedCompanyBId])
-
 
     return (
         <div>
