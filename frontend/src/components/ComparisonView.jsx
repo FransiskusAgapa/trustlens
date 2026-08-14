@@ -1,5 +1,55 @@
 import {useState, useEffect } from 'react';
 import axios from 'axios';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
+const COLORS = ['#0D7377', '#C0392B', '#F4A261'];
+
+function getSentimentData(insights) {
+    const count = {positive: 0, negative: 0, neutral: 0}
+    insights.forEach(insight => {
+            const label = insight.sentiment_label.toLowerCase()
+            if (count[label] != undefined) count[label]++
+        }
+    )
+
+    return [
+        {name: 'Positive', value: count.positive},
+        {name: 'Negative', value: count.negative},
+        {name: 'Neutral', value: count.neutral}
+    ]
+}
+
+function getDepartmentSummary(insights) {
+    const departmentSummary = {}
+
+    insights.forEach(insight => {
+        const department = insight.department_tag
+        if (!departmentSummary[department]) {
+            departmentSummary[department] = {
+                total: 0,
+                positive: 0,
+                negative: 0,
+                neutral: 0,
+            }
+        }
+        departmentSummary[department].total++
+        const label = insight.sentiment_label.toLowerCase()
+        if (departmentSummary[department][label] != undefined) departmentSummary[department][label]++
+    })
+
+    return Object.entries(departmentSummary)
+        .map(([department, data]) => {
+            const dominantSentiment = ['positive', 'negative', 'neutral'].reduce((a, b) => data[a] > data[b] ? a : b)
+            return {
+                department,
+                total: data.total,
+                positive: data.positive,
+                negative: data.negative,
+                neutral: data.neutral,
+                dominantSentiment
+            }
+        })
+        .sort((a, b) => b.total - a.total)
+}
 
 function Compare({ companyAId, companyAName }) {
     const [selectedCompanyBId, setSelectedCompanyBId] = useState(null);
@@ -45,11 +95,11 @@ function Compare({ companyAId, companyAName }) {
     return (
         <div>
             {/* <h2 className="section-title">Compare Companies</h2> */}
-            <div style={{marginBottom: '24px'}}>
-                <label className="section-title">Compare against:</label>
-                <select 
-                    onChange={(e) => setSelectedCompanyBId(e.target.value)}
-                    style={{background: '#1B2A4A', color: '#E9ECEF', border: '1px solid #243558', padding: '8px', borderRadius: '6px'}}>
+            <div className="compare-selector">
+                <label className="section-title">Compare against:&nbsp;&nbsp;&nbsp;</label>
+                <select
+                    className="compare-select"
+                    onChange={(e) => setSelectedCompanyBId(e.target.value)}>
                     <option value="">Select a company</option>
                     {companies.map(company => (
                         <option key={company.id} value={company.id}>{company.name}</option>
@@ -60,29 +110,70 @@ function Compare({ companyAId, companyAName }) {
             <div className="comparison-grid">
                 <div className="comparison-card">
                     <h3>{companyAName || 'Company A'}</h3>
-                    {insightA.map((insight, i) => (
-                        <div key={i} style={{marginBottom: '8px'}}>
-                            <span className={`badge badge-${insight.sentiment_label}`}>{insight.sentiment_label}</span>
-                            <span style={{color: '#8899AA', fontSize: '0.85rem', marginLeft: '8px'}}>{insight.department_tag}</span>
+                    <div>
+                        <PieChart width={250} height={280}>
+                            <Pie
+                                data={getSentimentData(insightA)}
+                                cx={125}
+                                cy={110}
+                                outerRadius={80}
+                                dataKey="value"
+                                label={false}>
+                                {getSentimentData(insightA).map((entry, index) => (
+                                    <Cell key={index} fill={COLORS[index]} />
+                                ))}
+                            </Pie>
+                            <Tooltip />
+                            <Legend />
+                        </PieChart>
+                        <div className="dept-list">
+                            {getDepartmentSummary(insightA).slice(0, 3).map((dept, i) => (
+                                <div key={i} className="dept-item">
+                                    <span className={`dept-dot dept-dot-${dept.dominantSentiment}`}></span>
+                                    <span className="dept-name">{dept.department}</span>
+                                    <span className="dept-count">{dept.total} mentions</span>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    </div>
                 </div>
 
-                <div className="comparison-card">
-                    <h3>{selectedCompanyBId ? 'Company B' : 'Select a company'}</h3>
-                    {insightB.map((insight, i) => (
-                        <div key={i} style={{marginBottom: '8px'}}>
-                            <span className={`badge badge-${insight.sentiment_label}`}>{insight.sentiment_label}</span>
-                            <span style={{color: '#8899AA', fontSize: '0.85rem', marginLeft: '8px'}}>{insight.department_tag}</span>
+                    <div className="comparison-card">
+                    <h3>{companies.find(c => c.id == selectedCompanyBId)?.name || 'Select a company'}</h3>
+                    {selectedCompanyBId && insightB.length > 0 ? (
+                        <div>
+                            <PieChart width={250} height={280}>
+                                <Pie
+                                    data={getSentimentData(insightB)}
+                                    cx={125}
+                                    cy={110}
+                                    outerRadius={80}
+                                    dataKey="value"
+                                    label={false}>
+                                    {getSentimentData(insightB).map((entry, index) => (
+                                        <Cell key={index} fill={COLORS[index]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                                <Legend />
+                            </PieChart>
+                            <div className="dept-list">
+                                {getDepartmentSummary(insightB).slice(0, 3).map((dept, i) => (
+                                    <div key={i} className="dept-item">
+                                        <span className={`dept-dot dept-dot-${dept.dominantSentiment}`}></span>
+                                        <span className="dept-name">{dept.department}</span>
+                                        <span className="dept-count">{dept.total} mentions</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    ))}
+                    ) : (
+                        <div className="loading">Select a company to compare</div>
+                    )}
                 </div>
             </div>
         </div>
     )
 }
-
-
-
 
 export default Compare;
