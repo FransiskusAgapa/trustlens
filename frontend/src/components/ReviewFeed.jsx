@@ -9,7 +9,7 @@ function Reviews ({ companyId, companyName }) {
 
     useEffect(() => {
         if (companyId) {
-            axios.get(`https://trustlens-frontend-59k1.onrender.com/companies/${companyId}/reviews`)
+            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyId}/reviews`)
             .then((response) => {
                 setReviews(response.data.reviews);
                 setLoading(false);

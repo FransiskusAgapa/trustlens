@@ -6,7 +6,7 @@ function Companies({ onCompanySelect }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('https://trustlens-frontend-59k1.onrender.com/companies')
+        axios.get('https://trustlens-api-bywi.onrender.com/companies')
             .then((response) => {
                 setCompanies(response.data.companies);
                 setLoading(false);
