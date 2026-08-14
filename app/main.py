@@ -1,8 +1,9 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import get_connection
 from app.services.serve import get_companies, get_reviews_by_company, get_insights_by_company
+from app.rate_limiter import TokenBucket
 
 app = FastAPI()
 
@@ -13,6 +14,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+rate_limiter = TokenBucket(capacity=10, refill_rate=1) 
+
 
 @app.get("/")
 async def root():
@@ -28,7 +32,9 @@ async def health():
         return {"status": "unhealthy", "error": str(e)}
 
 @app.get("/companies")
-async def list_companies():
+async def list_companies(request: Request):
+    if not rate_limiter.is_allowed(request.client.host):
+        raise HTTPException(status_code=429, detail="Too Many Requests")
     return {"companies": get_companies()}
 
 @app.get("/companies/{company_id}/reviews")
