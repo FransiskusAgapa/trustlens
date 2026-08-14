@@ -1,13 +1,9 @@
-# token bucket
-
 import time
 
 class TokenBucket:
     def __init__(self, capacity, refill_rate):
         self.capacity = capacity
         self.refill_rate = refill_rate
-        self.tokens = capacity
-        self.last_refill_time = time.time()
         self.clients = {}
     
     def is_allowed(self, token_ip):
