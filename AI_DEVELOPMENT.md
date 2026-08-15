@@ -5,7 +5,7 @@
 TrustLens is a Glassdoor review intelligence dashboard that ingests real employee 
 reviews, runs AI-powered sentiment and department analysis, and surfaces actionable 
 insights for HR teams and startup founders. Built in 28 days using the same AI-DLC 
-methodology as ReviewSense, TrustLens is the repeatability proof that the process 
+methodology as [ReviewSense](https://github.com/FransiskusAgapa/reviewsense.git), TrustLens is the repeatability proof that the process 
 works across different business domains.
 
 ---
