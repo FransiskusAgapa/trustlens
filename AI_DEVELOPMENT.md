@@ -38,7 +38,7 @@ data engineering, and AI integration specialists.
 28 days, one developer, using Claude as architectural guide at every layer.
 
 **Repeatability proof:**
-TrustLens is Project 2 in a 10-project AI-DLC ladder. ReviewSense (Project 1) 
+TrustLens is Project 2 in a 10-project AI-DLC ladder. [ReviewSense](https://github.com/FransiskusAgapa/reviewsense.git) (Project 1) 
 solved Amazon review intelligence in 28 days. TrustLens solved Glassdoor review 
 intelligence in 28 days using the identical methodology. Different domain, same 
 process, same production quality outcome. This is the definition of a repeatable 
