@@ -161,7 +161,7 @@ at the infrastructure level, not just the application level.
 
 ## Live URLs
 
-- Frontend: https://trustlens-frontend-ajub.onrender.com
+- Frontend: https://trustlens-frontend-59k1.onrender.com/
 - Backend: https://trustlens-api-bywi.onrender.com
 - GitHub: https://github.com/FransiskusAgapa/trustlens
 - ReviewSense (Project 1): https://reviewsense-frontend-p2qj.onrender.com
