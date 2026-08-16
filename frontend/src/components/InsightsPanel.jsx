@@ -40,15 +40,17 @@ function Insights({ companyId, companyName }) {
 
     return (
         <div>
-            <h2 className="section-title">{companyName} has ({filteredInsights.length}) Insights</h2>
-            <select className="compare-select"
-            onChange={(e) => setTimeRange(e.target.value)}
-            style={{marginBottom:'16px'}}>
-                <option value="all">All Time</option>
-                <option value="6months">Last 6 Months</option>
-                <option value="1year">Last Year</option>
-                <option value="3years">Last 3 Years</option>
-            </select>
+            <div className="section-header">
+                <h2 className="section-title">{companyName} has ({filteredInsights.length}) Insights</h2>
+                <select className="compare-select"
+                onChange={(e) => setTimeRange(e.target.value)}
+                style={{marginBottom:'16px'}}>
+                    <option value="all">All Time</option>
+                    <option value="6months">Last 6 Months</option>
+                    <option value="1year">Last Year</option>
+                    <option value="3years">Last 3 Years</option>
+                </select>
+            </div>
 
             {filteredInsights.map((insight, index) => (
                 <div key={index}>

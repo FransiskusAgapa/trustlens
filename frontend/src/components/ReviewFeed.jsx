@@ -42,16 +42,17 @@ function Reviews ({ companyId, companyName }) {
 
     return (
         <div>
-            <h2 className="section-title">{companyName} has ({filteredReviews.length}) Reviews</h2>
-            <select className="compare-select"
-            onChange={(e) => setTimeRange(e.target.value)}
-            style={{marginBottom:'16px'}}>
-                <option value="all">All Time</option>
-                <option value="6months">Last 6 Months</option>
-                <option value="1year">Last Year</option>
-                <option value="3year">Last 3 Years</option>
-            </select>
-
+            <div className="section-header">
+                <h2 className="section-title">{companyName} has ({filteredReviews.length}) Reviews</h2>
+                <select className="compare-select"
+                onChange={(e) => setTimeRange(e.target.value)}
+                style={{marginBottom:'16px'}}>
+                    <option value="all">All Time</option>
+                    <option value="6months">Last 6 Months</option>
+                    <option value="1year">Last Year</option>
+                    <option value="3year">Last 3 Years</option>
+                </select>
+            </div>
             {filteredReviews.map((review, index) => (
                 <div key={index} className="review-item">
                     <div className="rating">

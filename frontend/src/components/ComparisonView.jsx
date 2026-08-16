@@ -94,7 +94,6 @@ function Compare({ companyAId, companyAName }) {
 
     return (
         <div>
-            {/* <h2 className="section-title">Compare Companies</h2> */}
             <div className="compare-selector">
                 <label className="section-title">Compare against:&nbsp;&nbsp;&nbsp;</label>
                 <select
@@ -112,7 +111,8 @@ function Compare({ companyAId, companyAName }) {
                     <h3>{companyAName || 'Company A'}</h3>
                     <p style={{color: '#8899AA', fontSize: '0.8rem', marginBottom: '8px'}}>
                         Based on {insightA.length} reviews
-                        {insightA.length > 0 && ` (${new Date(insightA[insightA.length-1].review_date).getFullYear()} - ${new Date(insightA[0].review_date).getFullYear()})`}
+                        {insightA.length > 0 && insightA[0].review_date && insightA[insightA.length-1].review_date && 
+                        `(${new Date(insightA[insightA.length-1].review_date).getFullYear()} - ${new Date(insightA[0].review_date).getFullYear()})`}
                     </p>
                     <div>
                         <PieChart width={250} height={280}>
@@ -146,7 +146,8 @@ function Compare({ companyAId, companyAName }) {
                         <h3>{companies.find(c => c.id == selectedCompanyBId)?.name || 'Select a company'}</h3>
                         <p style={{color: '#8899AA', fontSize: '0.8rem', marginBottom: '8px'}}>
                             Based on {insightB.length} reviews
-                            {insightB.length > 0 && ` (${new Date(insightB[insightB.length-1].review_date).getFullYear()} - ${new Date(insightB[0].review_date).getFullYear()})`}
+                            {insightB.length > 0 && insightB[0].review_date && insightB[insightB.length-1].review_date && 
+                            `(${new Date(insightB[insightB.length-1].review_date).getFullYear()} - ${new Date(insightB[0].review_date).getFullYear()})`}
                         </p>
                         {selectedCompanyBId && insightB.length > 0 ? (
                             <div>
