@@ -110,6 +110,10 @@ function Compare({ companyAId, companyAName }) {
             <div className="comparison-grid">
                 <div className="comparison-card">
                     <h3>{companyAName || 'Company A'}</h3>
+                    <p style={{color: '#8899AA', fontSize: '0.8rem', marginBottom: '8px'}}>
+                        Based on {insightA.length} reviews
+                        {insightA.length > 0 && ` (${new Date(insightA[insightA.length-1].review_date).getFullYear()} - ${new Date(insightA[0].review_date).getFullYear()})`}
+                    </p>
                     <div>
                         <PieChart width={250} height={280}>
                             <Pie
@@ -139,35 +143,39 @@ function Compare({ companyAId, companyAName }) {
                 </div>
 
                     <div className="comparison-card">
-                    <h3>{companies.find(c => c.id == selectedCompanyBId)?.name || 'Select a company'}</h3>
-                    {selectedCompanyBId && insightB.length > 0 ? (
-                        <div>
-                            <PieChart width={250} height={280}>
-                                <Pie
-                                    data={getSentimentData(insightB)}
-                                    cx={125}
-                                    cy={110}
-                                    outerRadius={80}
-                                    dataKey="value"
-                                    label={false}>
-                                    {getSentimentData(insightB).map((entry, index) => (
-                                        <Cell key={index} fill={COLORS[index]} />
+                        <h3>{companies.find(c => c.id == selectedCompanyBId)?.name || 'Select a company'}</h3>
+                        <p style={{color: '#8899AA', fontSize: '0.8rem', marginBottom: '8px'}}>
+                            Based on {insightB.length} reviews
+                            {insightB.length > 0 && ` (${new Date(insightB[insightB.length-1].review_date).getFullYear()} - ${new Date(insightB[0].review_date).getFullYear()})`}
+                        </p>
+                        {selectedCompanyBId && insightB.length > 0 ? (
+                            <div>
+                                <PieChart width={250} height={280}>
+                                    <Pie
+                                        data={getSentimentData(insightB)}
+                                        cx={125}
+                                        cy={110}
+                                        outerRadius={80}
+                                        dataKey="value"
+                                        label={false}>
+                                        {getSentimentData(insightB).map((entry, index) => (
+                                            <Cell key={index} fill={COLORS[index]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                                <div className="dept-list">
+                                    {getDepartmentSummary(insightB).slice(0, 3).map((dept, i) => (
+                                        <div key={i} className="dept-item">
+                                            <span className={`dept-dot dept-dot-${dept.dominantSentiment}`}></span>
+                                            <span className="dept-name">{dept.department}</span>
+                                            <span className="dept-count">{dept.total} mentions</span>
+                                        </div>
                                     ))}
-                                </Pie>
-                                <Tooltip />
-                                <Legend />
-                            </PieChart>
-                            <div className="dept-list">
-                                {getDepartmentSummary(insightB).slice(0, 3).map((dept, i) => (
-                                    <div key={i} className="dept-item">
-                                        <span className={`dept-dot dept-dot-${dept.dominantSentiment}`}></span>
-                                        <span className="dept-name">{dept.department}</span>
-                                        <span className="dept-count">{dept.total} mentions</span>
-                                    </div>
-                                ))}
+                                </div>
                             </div>
-                        </div>
-                    ) : (
+                        ) : (
                         <div className="loading">Select a company to compare</div>
                     )}
                 </div>

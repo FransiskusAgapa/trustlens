@@ -4,14 +4,17 @@ import {useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Reviews ({ companyId, companyName }) {
-    const [reviews, setReviews] = useState([]);
+    const [allReviews, setAllReviews] = useState([]);
+    const [filteredReviews, setFilteredReviews] = useState([]);
+    const [timeRange, setTimeRange] = useState('all');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (companyId) {
             axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyId}/reviews`)
             .then((response) => {
-                setReviews(response.data.reviews);
+                setAllReviews(response.data.reviews);
+                setFilteredReviews(response.data.reviews);
                 setLoading(false);
             })
             .catch((error) => {
@@ -21,14 +24,35 @@ function Reviews ({ companyId, companyName }) {
         }
     }, [companyId]);
 
+    useEffect( () => {
+        if (timeRange === 'all') {
+            setFilteredReviews(allReviews);
+            return;
+        }
+
+        const months = timeRange === '6months' ? 6 : timeRange === "1year" ? 12 : 36
+        const cutoff = new Date();
+        cutoff.setMonth(cutoff.getMonth() - months);
+        setFilteredReviews(allReviews.filter(review => new Date(review.created_at) >= cutoff));
+    }, [timeRange, allReviews]);
+
     if (!companyId) return <div className="loading">Please select a company to view reviews.</div>
 
     if (loading) return <div className="loading">Loading company reviews...</div>
 
     return (
         <div>
-            <h2 className="section-title">{companyName} has ({reviews.length}) Reviews</h2>
-            {reviews.map((review, index) => (
+            <h2 className="section-title">{companyName} has ({filteredReviews.length}) Reviews</h2>
+            <select className="compare-select"
+            onChange={(e) => setTimeRange(e.target.value)}
+            style={{marginBottom:'16px'}}>
+                <option value="all">All Time</option>
+                <option value="6months">Last 6 Months</option>
+                <option value="1year">Last Year</option>
+                <option value="3year">Last 3 Years</option>
+            </select>
+
+            {filteredReviews.map((review, index) => (
                 <div key={index} className="review-item">
                     <div className="rating">
                         {'★'.repeat(review.rating || 0)}{'☆'.repeat(5 - (review.rating || 0))}

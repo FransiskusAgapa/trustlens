@@ -2,14 +2,17 @@ import {useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Insights({ companyId, companyName }) {
-    const [insights, setInsights] = useState([]);
+    const [allInsights, setAllInsights] = useState([]);
+    const [filteredInsights, setFilteredInsights] = useState([]);
+    const [timeRange, setTimeRange] = useState('all');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (companyId) {
             axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyId}/insights`)
             .then((response) => {
-                setInsights(response.data.insights);
+                setAllInsights(response.data.insights);
+                setFilteredInsights(response.data.insights);
                 setLoading(false);
             })
             .catch((error) => {
@@ -19,14 +22,35 @@ function Insights({ companyId, companyName }) {
         }
     }, [companyId]);
 
+    useEffect( () => {
+        if (timeRange === 'all') {
+            setFilteredInsights(allInsights);
+            return;
+        }
+
+        const months = timeRange === '6months' ? 6 : timeRange === "1year" ? 12 : 36
+        const cutoff = new Date();
+        cutoff.setMonth(cutoff.getMonth() - months);
+        setFilteredInsights(allInsights.filter(insight => new Date(insight.review_date) >= cutoff));
+    }, [timeRange, allInsights]);
+
     if (!companyId) return <div className="loading">Please select a company to view insights.</div>
 
     if (loading) return <div className="loading">Loading company insights...</div>
 
     return (
         <div>
-            <h2 className="section-title">{companyName} has ({insights.length}) Insights</h2>
-            {insights.map((insight, index) => (
+            <h2 className="section-title">{companyName} has ({filteredInsights.length}) Insights</h2>
+            <select className="compare-select"
+            onChange={(e) => setTimeRange(e.target.value)}
+            style={{marginBottom:'16px'}}>
+                <option value="all">All Time</option>
+                <option value="6months">Last 6 Months</option>
+                <option value="1year">Last Year</option>
+                <option value="3years">Last 3 Years</option>
+            </select>
+
+            {filteredInsights.map((insight, index) => (
                 <div key={index}>
                     <div key={index} className="review-item">
                         <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'8px'}}>
