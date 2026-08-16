@@ -14,7 +14,7 @@ body {
 .app-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 24px 32px;
 }
 
 .app-header {
@@ -154,8 +154,10 @@ body {
 .section-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap:16px;
   margin-bottom: 16px;
+  width: 100%;
 }
 
 .comparison-grid {
