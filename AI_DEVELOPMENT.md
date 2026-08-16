@@ -5,7 +5,7 @@
 TrustLens is a Glassdoor review intelligence dashboard that ingests real employee 
 reviews, runs AI-powered sentiment and department analysis, and surfaces actionable 
 insights for HR teams and startup founders. Built in 28 days using the same AI-DLC 
-methodology as ReviewSense, TrustLens is the repeatability proof that the process 
+methodology as [ReviewSense](https://github.com/FransiskusAgapa/reviewsense.git), TrustLens is the repeatability proof that the process 
 works across different business domains.
 
 ---
@@ -38,7 +38,7 @@ data engineering, and AI integration specialists.
 28 days, one developer, using Claude as architectural guide at every layer.
 
 **Repeatability proof:**
-TrustLens is Project 2 in a 10-project AI-DLC ladder. ReviewSense (Project 1) 
+TrustLens is Project 2 in a 10-project AI-DLC ladder. [ReviewSense](https://github.com/FransiskusAgapa/reviewsense.git) (Project 1) 
 solved Amazon review intelligence in 28 days. TrustLens solved Glassdoor review 
 intelligence in 28 days using the identical methodology. Different domain, same 
 process, same production quality outcome. This is the definition of a repeatable 
@@ -161,7 +161,7 @@ at the infrastructure level, not just the application level.
 
 ## Live URLs
 
-- Frontend: https://trustlens-frontend-ajub.onrender.com
+- Frontend: https://trustlens-frontend-59k1.onrender.com/
 - Backend: https://trustlens-api-bywi.onrender.com
 - GitHub: https://github.com/FransiskusAgapa/trustlens
 - ReviewSense (Project 1): https://reviewsense-frontend-p2qj.onrender.com
