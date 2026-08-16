@@ -19,7 +19,10 @@ def get_companies():
 def get_reviews_by_company(company_id):
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM reviews WHERE company_id = %s;", (company_id,))
+    cur.execute("""SELECT * 
+    FROM reviews 
+    WHERE company_id = %s;""", 
+    (company_id,))
     results = cur.fetchall()
     columns = [desc[0] for desc in cur.description]
     conn.close()
@@ -30,7 +33,7 @@ def get_insights_by_company(company_id):
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-        SELECT ri.*
+        SELECT ri.*, r.created_at as review_date
         FROM review_insights ri
         JOIN reviews r ON ri.review_id = r.id
         WHERE r.company_id = %s;
