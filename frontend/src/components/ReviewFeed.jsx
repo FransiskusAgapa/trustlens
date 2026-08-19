@@ -7,9 +7,12 @@ function Reviews ({ companyId, companyName }) {
     const [filteredReviews, setFilteredReviews] = useState([]);
     const [timeRange, setTimeRange] = useState('all');
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if (companyId) {
+            setLoading(true)
+            setError(null)
             api.get(`/companies/${companyId}/reviews`)
             .then((response) => {
                 setAllReviews(response.data.reviews);
@@ -18,6 +21,7 @@ function Reviews ({ companyId, companyName }) {
             })
             .catch((error) => {
                 console.error('Error fetching reviews:', error);
+                setError('Failed to load reviews. Please try again.')
                 setLoading(false);
             });
         }
@@ -28,20 +32,19 @@ function Reviews ({ companyId, companyName }) {
     }, [timeRange, allReviews])
 
     if (!companyId) return <div className="loading">Please select a company to view reviews.</div>
-
     if (loading) return <div className="loading">Loading company reviews...</div>
+    if (error) return <div className="loading" style={{color: '#C0392B'}}>{error}</div>
 
     return (
         <div>
             <div className="section-header">
-                <h2 className="section-title">{companyName} has ({filteredReviews.length}) Reviews</h2>
+                <h2 className="section-title">{companyName} ({filteredReviews.length} Reviews)</h2>
                 <select className="compare-select"
-                onChange={(e) => setTimeRange(e.target.value)}
-                style={{marginBottom:'16px'}}>
+                onChange={(e) => setTimeRange(e.target.value)}>
                     <option value="all">All Time</option>
                     <option value="6months">Last 6 Months</option>
                     <option value="1year">Last Year</option>
-                    <option value="3year">Last 3 Years</option>
+                    <option value="3years">Last 3 Years</option>
                 </select>
             </div>
             {filteredReviews.map((review) => (

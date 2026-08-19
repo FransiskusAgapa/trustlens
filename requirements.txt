@@ -1,7 +1,6 @@
-fastapi 
-uvicorn 
-psycopg2
-psycopg2-binary 
-python-dotenv 
-openai
-pytest
+fastapi==0.141.1
+uvicorn==0.52.1
+psycopg2-binary==2.9.12
+python-dotenv==1.2.2
+openai==2.44.0
+pytest==9.1.1
