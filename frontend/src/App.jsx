@@ -6,7 +6,6 @@ import Compare from './components/ComparisonView';
 import './App.css';
 
 const App = () => {
-  console.log('Wohoo, App rendered');
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [view, setView] = useState('companies');
 

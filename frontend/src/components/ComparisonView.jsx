@@ -1,13 +1,13 @@
 import {useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
-const COLORS = ['#0D7377', '#C0392B', '#F4A261'];
 import api from '../api';
+const COLORS = ['#0D7377', '#C0392B', '#F4A261'];
 
 function getSentimentData(insights) {
     const count = {positive: 0, negative: 0, neutral: 0}
     insights.forEach(insight => {
             const label = insight.sentiment_label.toLowerCase()
-            if (count[label] != undefined) count[label]++
+            if (count[label] !== undefined) count[label]++
         }
     )
 
@@ -33,7 +33,7 @@ function getDepartmentSummary(insights) {
         }
         departmentSummary[department].total++
         const label = insight.sentiment_label.toLowerCase()
-        if (departmentSummary[department][label] != undefined) departmentSummary[department][label]++
+        if (departmentSummary[department][label] !== undefined) departmentSummary[department][label]++
     })
 
     return Object.entries(departmentSummary)
@@ -53,7 +53,6 @@ function getDepartmentSummary(insights) {
 
 function Compare({ companyAId, companyAName }) {
     const [selectedCompanyBId, setSelectedCompanyBId] = useState(null);
-    const [selectedCompanyBName, setSelectedCompanyBName] = useState(null);
 
     const [companies, setCompanies] = useState([])
 
@@ -98,10 +97,15 @@ function Compare({ companyAId, companyAName }) {
                 <label className="section-title">Compare against:&nbsp;&nbsp;&nbsp;</label>
                 <select
                     className="compare-select"
-                    onChange={(e) => setSelectedCompanyBId(e.target.value)}>
+                    onChange={(e) => {
+                        setSelectedCompanyBId(e.target.value);
+                        if (!e.target.value) setInsightB([]);
+                    }}>
                     <option value="">Select a company</option>
-                    {companies.map(company => (
-                        <option key={company.id} value={company.id}>{company.name}</option>
+                    {companies
+                        .filter(company => company.id !== companyAId)
+                        .map(company => (
+                            <option key={company.id} value={company.id}>{company.name}</option>
                     ))}
                 </select>
             </div>
@@ -143,7 +147,7 @@ function Compare({ companyAId, companyAName }) {
                 </div>
 
                     <div className="comparison-card">
-                        <h3>{companies.find(c => c.id == selectedCompanyBId)?.name || 'Select a company'}</h3>
+                        <h3>{companies.find(c => c.id === Number(selectedCompanyBId))?.name || 'Select a company'}</h3>
                         <p style={{color: '#8899AA', fontSize: '0.8rem', marginBottom: '8px'}}>
                             Based on {insightB.length} reviews
                             {insightB.length > 0 && insightB[0].review_date && insightB[insightB.length-1].review_date && 

@@ -1,7 +1,6 @@
-// placeholder for 'Reviews'
-
 import {useState, useEffect } from 'react';
 import api from '../api';
+import { filterByTimeRange } from '../utils/timeFilter'
 
 function Reviews ({ companyId, companyName }) {
     const [allReviews, setAllReviews] = useState([]);
@@ -24,17 +23,9 @@ function Reviews ({ companyId, companyName }) {
         }
     }, [companyId]);
 
-    useEffect( () => {
-        if (timeRange === 'all') {
-            setFilteredReviews(allReviews);
-            return;
-        }
-
-        const months = timeRange === '6months' ? 6 : timeRange === "1year" ? 12 : 36
-        const cutoff = new Date();
-        cutoff.setMonth(cutoff.getMonth() - months);
-        setFilteredReviews(allReviews.filter(review => new Date(review.created_at) >= cutoff));
-    }, [timeRange, allReviews]);
+    useEffect(() => {
+        setFilteredReviews(filterByTimeRange(allReviews, timeRange, 'created_at'))
+    }, [timeRange, allReviews])
 
     if (!companyId) return <div className="loading">Please select a company to view reviews.</div>
 
@@ -53,8 +44,8 @@ function Reviews ({ companyId, companyName }) {
                     <option value="3year">Last 3 Years</option>
                 </select>
             </div>
-            {filteredReviews.map((review, index) => (
-                <div key={index} className="review-item">
+            {filteredReviews.map((review) => (
+                <div key={review.id} className="review-item">
                     <div className="rating">
                         {'★'.repeat(review.rating || 0)}{'☆'.repeat(5 - (review.rating || 0))}
                         {review.rating ? ` ${review.rating}/5` : ' No rating'}

@@ -1,5 +1,6 @@
 import {useState, useEffect } from 'react';
 import api from '../api';
+import { filterByTimeRange } from '../utils/timeFilter'
 
 function Insights({ companyId, companyName }) {
     const [allInsights, setAllInsights] = useState([]);
@@ -22,17 +23,9 @@ function Insights({ companyId, companyName }) {
         }
     }, [companyId]);
 
-    useEffect( () => {
-        if (timeRange === 'all') {
-            setFilteredInsights(allInsights);
-            return;
-        }
-
-        const months = timeRange === '6months' ? 6 : timeRange === "1year" ? 12 : 36
-        const cutoff = new Date();
-        cutoff.setMonth(cutoff.getMonth() - months);
-        setFilteredInsights(allInsights.filter(insight => new Date(insight.review_date) >= cutoff));
-    }, [timeRange, allInsights]);
+    useEffect(() => {
+        setFilteredInsights(filterByTimeRange(allInsights, timeRange, 'review_date'))
+    }, [timeRange, allInsights])
 
     if (!companyId) return <div className="loading">Please select a company to view insights.</div>
 
@@ -52,9 +45,9 @@ function Insights({ companyId, companyName }) {
                 </select>
             </div>
 
-            {filteredInsights.map((insight, index) => (
-                <div key={index}>
-                    <div key={index} className="review-item">
+            {filteredInsights.map((insight) => (
+                <div key={insight.id}>
+                    <div key={insight.id} className="review-item">
                         <div style={{display:'flex', alignItems:'center', gap:'10px', marginBottom:'8px'}}>
                             <span className={`badge badge-${insight.sentiment_label}`}>
                                 {insight.sentiment_label}

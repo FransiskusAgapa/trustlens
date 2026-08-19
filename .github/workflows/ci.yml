@@ -13,7 +13,7 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_PASSWORD: master
+          POSTGRES_PASSWORD: ci-local-only
           POSTGRES_DB: trustlens
         options: >-
           --health-cmd pg_isready
@@ -38,7 +38,7 @@ jobs:
         AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
         AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
         AZURE_OPENAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
-        DATABASE_URL: postgresql://postgres:master@localhost:5432/trustlens
+        DATABASE_URL: postgresql://postgres:ci-local-only@localhost:5432/trustlens
 
 
 
