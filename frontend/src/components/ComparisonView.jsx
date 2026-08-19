@@ -1,7 +1,7 @@
 import {useState, useEffect } from 'react';
-import axios from 'axios';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
 const COLORS = ['#0D7377', '#C0392B', '#F4A261'];
+import api from '../api';
 
 function getSentimentData(insights) {
     const count = {positive: 0, negative: 0, neutral: 0}
@@ -61,7 +61,7 @@ function Compare({ companyAId, companyAName }) {
     const [insightB, setInsightB] = useState([])
 
     useEffect(() => {
-        axios.get(`https://trustlens-api-bywi.onrender.com/companies`)
+        api.get('/companies')
         .then((response) => {
             setCompanies(response.data.companies)
         })
@@ -73,7 +73,7 @@ function Compare({ companyAId, companyAName }) {
 
     useEffect(() => {
         if (companyAId) {
-            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyAId}/insights`)
+            api.get(`/companies/${companyAId}/insights`)
             .then((response) => {
                 setInsightA(response.data.insights)
             })
@@ -82,7 +82,7 @@ function Compare({ companyAId, companyAName }) {
             });
         }
         if (selectedCompanyBId) {
-            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${selectedCompanyBId}/insights`)
+            api.get(`/companies/${selectedCompanyBId}/insights`)
             .then((response) => {
                 setInsightB(response.data.insights)
             })

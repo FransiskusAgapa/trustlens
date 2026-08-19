@@ -1,7 +1,7 @@
 // placeholder for 'Reviews'
 
 import {useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function Reviews ({ companyId, companyName }) {
     const [allReviews, setAllReviews] = useState([]);
@@ -11,7 +11,7 @@ function Reviews ({ companyId, companyName }) {
 
     useEffect(() => {
         if (companyId) {
-            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyId}/reviews`)
+            api.get(`/companies/${companyId}/reviews`)
             .then((response) => {
                 setAllReviews(response.data.reviews);
                 setFilteredReviews(response.data.reviews);
@@ -67,4 +67,3 @@ function Reviews ({ companyId, companyName }) {
 }
 
 export default Reviews;
-

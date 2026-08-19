@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function Companies({ onCompanySelect }) {
     const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('https://trustlens-api-bywi.onrender.com/companies')
+        api.get('/companies')
             .then((response) => {
                 setCompanies(response.data.companies);
                 setLoading(false);

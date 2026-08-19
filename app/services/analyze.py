@@ -10,6 +10,10 @@ def analyze_review(review_text):
     endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
     model = os.getenv("AZURE_OPENAI_DEPLOYMENT")
     api_version = "2024-02-01"
+
+    # fail fast if any credential is missing
+    if not api_key or not endpoint or not model:
+        raise ValueError("Missing Azure OpenAI credentials. Check \n- AZURE_OPENAI_API_KEY, \n- AZURE_OPENAI_ENDPOINT, \n- AZURE_OPENAI_DEPLOYMENT in .env")
     
     # create the Azure OpenAI client
     client = AzureOpenAI(
@@ -33,8 +37,9 @@ def analyze_review(review_text):
     response = client.chat.completions.create(
         model=model,
         messages=message,
+        response_format={"type": "json_object"},
+        temperature=0
     )
-
 
     # return the response
     return response.choices[0].message.content

@@ -1,5 +1,5 @@
 import {useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function Insights({ companyId, companyName }) {
     const [allInsights, setAllInsights] = useState([]);
@@ -9,7 +9,7 @@ function Insights({ companyId, companyName }) {
 
     useEffect(() => {
         if (companyId) {
-            axios.get(`https://trustlens-api-bywi.onrender.com/companies/${companyId}/insights`)
+            api.get(`/companies/${companyId}/insights`)
             .then((response) => {
                 setAllInsights(response.data.insights);
                 setFilteredInsights(response.data.insights);
